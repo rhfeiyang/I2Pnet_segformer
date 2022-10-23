@@ -31,7 +31,7 @@ After downloading the data, please change the paths to the datasets in ```config
 python scripts/evaluate_model.py --intention ./models/coarse_level.pth --segmentation ./models/fine_level.pth  --datasets GrabCut,Berkeley
 ```
 
-The model we provide is HRNet18 trained on COCO+LVIS, and its performance(NoC@90) on Berkeley is 2.25
+The model we provide is HRNet18
 
 ### Performance
 
