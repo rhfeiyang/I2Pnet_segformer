@@ -27,6 +27,7 @@ After downloading the data, please change the paths to the datasets in ```config
 
 ### Evaluation
 
+Before evaluation, you have to download the checkpoint from [google driver](https://drive.google.com/drive/folders/1SCiXEi5N-bmiDhSJ__W2aRvT0PKBQhXY?usp=sharing). And put the checkpoint into directory models.
 ```bash
 python scripts/evaluate_model.py --intention ./models/coarse_level.pth --segmentation ./models/fine_level.pth  --datasets GrabCut,Berkeley
 ```
