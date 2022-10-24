@@ -64,4 +64,4 @@ class CocoLvisDataset(ISDataset):
                 layer_indx, mask_id = objs_mapping[inst_id]
                 layers[:, :, layer_indx][layers[:, :, layer_indx] == mask_id] = 0
 
-        return DSample(image, layers, objects=instances_info)
+        return DSample(image, layers, objects=instances_info, image_name=f'{image_id}.jpg')

@@ -25,13 +25,27 @@ Here is the evaluation code with trained models. Before start evaluation, you ne
 
 After downloading the data, please change the paths to the datasets in ```config.yml```.
 
+### Training
+
+1. Train coarse level network
+
+```bash
+python train_coarse.py models/iter_mask/coarse_hrnet18_cocolvis_itermask_3p.py --workers 4 --exp-name hrnet_coarse --gpus 0,1
+```
+
+2. Train fine level network
+
+```bash
+python train_fine.py models/iter_mask/fine_hrnet18_cocolvis_itermask_3p.py --workers 4 --int-model hrnet_corase --exp-name hrnet_fine --gpus 0,1
+```
+
 ### Evaluation
 
 ```bash
-python scripts/evaluate_model.py --intention ./models/coarse_level.pth --segmentation ./models/fine_level.pth  --datasets GrabCut,Berkeley
+python scripts/evaluate_model.py --intention ./experiments/iter_mask/resnet34/hrnet_coarse/checkpoints/last_checkpoint.pth --segmentation ./experiments/iter_mask/resnet34/hrnet_fine/checkpoints/last_checkpoint.pth --datasets GrabCut,Berkeley
 ```
 
-Due to the double blind, we can't provide the pretrained checkpoint now. We will provide the training code and pretrained checkpoint later.
+Due to the double blind and file size limitation, we can't provide the pretrained checkpoint now. We will provide the pretrained checkpoint later.
 
 ### Performance
 

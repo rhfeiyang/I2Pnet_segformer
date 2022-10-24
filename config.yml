@@ -12,7 +12,7 @@ COCO_MVAL_UNSEEN_PATH: "datasets/TestSet/COCO_MVal_unseen"
 # Train datasets
 SBD_PATH: "datasets/SBD"
 COCO_PATH: "datasets/coco2017"
-LVIS_PATH: "datasets/LVIS"
+LVIS_PATH: "datasets/LVIS/label"
 OPENIMAGES_PATH: "datasets/OpenImages"
 PASCALVOC_PATH: "datasets/TestSet/VOC2012"
 
