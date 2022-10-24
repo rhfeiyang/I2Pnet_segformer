@@ -1,6 +1,6 @@
 ## Intention-aware Feature Propagation Network for Interactive Segmentation
 
-Here is the evaluation code with trained models. Before start evaluation, you need to prepare data by downloading from the following link:
+Here is the code for training and evaluation. Before that, you need to prepare data by downloading from the following link:
 
 | Dataset   |                      Description             |           Download Link              |
 |-----------|----------------------------------------------|:------------------------------------:|
