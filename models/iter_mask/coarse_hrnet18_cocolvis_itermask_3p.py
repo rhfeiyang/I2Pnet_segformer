@@ -1,5 +1,5 @@
 from isegm.utils.exp_imports.default import *
-MODEL_NAME = 'resnet34'
+MODEL_NAME = 'regformer'
 
 
 def main(cfg):
@@ -12,9 +12,12 @@ def init_model(cfg):
     model_cfg.crop_size = (320, 480)
     model_cfg.num_max_points = 24
 
-    model = HRNetModel(width=18, ocr_width=64, with_aux_output=True, use_leaky_relu=True,
-                       use_rgb_conv=False, use_disks=True, norm_radius=5,
-                       with_prev_mask=True)
+    # model = HRNetModel(width=18, ocr_width=64, with_aux_output=True, use_leaky_relu=True,
+    #                    use_rgb_conv=False, use_disks=True, norm_radius=5,
+    #                    with_prev_mask=True)
+    model = SegFormerModel( pipeline_version = 's2', model_version = 'b3',
+                       use_leaky_relu=True, use_rgb_conv=False, use_disks=True, norm_radius=5, binary_prev_mask=False,
+                       with_prev_mask=True, with_aux_output=True)
 
     model.to(cfg.device)
     model.apply(initializer.XavierGluon(rnd_type='gaussian', magnitude=2.0))
