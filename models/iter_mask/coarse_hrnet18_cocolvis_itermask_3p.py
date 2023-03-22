@@ -15,13 +15,13 @@ def init_model(cfg):
     # model = HRNetModel(width=18, ocr_width=64, with_aux_output=True, use_leaky_relu=True,
     #                    use_rgb_conv=False, use_disks=True, norm_radius=5,
     #                    with_prev_mask=True)
-    model = SegFormerModel( pipeline_version = 's2', model_version = 'b3',
+    model = SegFormerModel( pipeline_version = 's1', model_version = 'b0',
                        use_leaky_relu=True, use_rgb_conv=False, use_disks=True, norm_radius=5, binary_prev_mask=False,
                        with_prev_mask=True, with_aux_output=True)
 
     model.to(cfg.device)
-    model.apply(initializer.XavierGluon(rnd_type='gaussian', magnitude=2.0))
-    model.feature_extractor.load_pretrained_weights(cfg.IMAGENET_PRETRAINED_MODELS.HRNETV2_W18)
+    # model.apply(initializer.XavierGluon(rnd_type='gaussian', magnitude=2.0))
+    model.feature_extractor.load_pretrained_weights(cfg.IMAGENET_PRETRAINED_MODELS.SEGFORMER_B0)
 
     print(model_cfg)
 

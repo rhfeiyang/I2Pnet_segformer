@@ -56,8 +56,8 @@ class SegFormerModel(ISModel):
         return coord_features
 
 
-    def backbone_forward(self, image, side_feature):
-        mask, feature = self.feature_extractor(image, side_feature)
+    def backbone_forward(self, image, side_feature,points):
+        mask, feature = self.feature_extractor(image,points, side_feature)
         return {'instances': mask, 'instances_aux':mask, 'feature': feature}
         
 
@@ -88,7 +88,7 @@ class SegFormerModel(ISModel):
             small_coord_features = coord_features
 
         #small_coord_features = self.maps_transform(small_coord_features)
-        outputs = self.backbone_forward( small_image, small_coord_features)
+        outputs = self.backbone_forward( small_image, small_coord_features,points)
 
         outputs['click_map'] = click_map
         outputs['instances'] = nn.functional.interpolate(outputs['instances'], size=image.size()[2:],

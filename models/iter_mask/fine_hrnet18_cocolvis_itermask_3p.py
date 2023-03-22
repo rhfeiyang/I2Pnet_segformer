@@ -13,18 +13,24 @@ def init_model(cfg):
     model_cfg.crop_size = (320, 480)
     model_cfg.num_max_points = 24
 
-    int_model = HRNetModel(width=18, ocr_width=64, with_aux_output=True, use_leaky_relu=True,
-                           use_rgb_conv=False, use_disks=True, norm_radius=5,
-                           with_prev_mask=True)
+    # int_model = HRNetModel(width=18, ocr_width=64, with_aux_output=True, use_leaky_relu=True,
+    #                        use_rgb_conv=False, use_disks=True, norm_radius=5,
+    #                        with_prev_mask=True)
+    int_model = SegFormerModel( pipeline_version = 's2', model_version = 'b3',
+                       use_leaky_relu=True, use_rgb_conv=False, use_disks=True, norm_radius=5, binary_prev_mask=False,
+                       with_prev_mask=True, with_aux_output=True)
 
     int_model_pretrain_model = torch.load(
         f'./experiments/iter_mask/resnet34/{cfg.int_model_name}/checkpoints/last_checkpoint.pth')
     int_model.load_state_dict(int_model_pretrain_model['state_dict'])
     int_model.to(cfg.device)
 
-    seg_model = HRNetModel(width=18, ocr_width=64, with_aux_output=True, use_leaky_relu=True,
-                           use_rgb_conv=False, use_disks=True, norm_radius=5,
-                           with_prev_mask=True)
+    # seg_model = HRNetModel(width=18, ocr_width=64, with_aux_output=True, use_leaky_relu=True,
+    #                        use_rgb_conv=False, use_disks=True, norm_radius=5,
+    #                        with_prev_mask=True)
+    seg_model = SegFormerModel( pipeline_version = 's2', model_version = 'b3',
+                       use_leaky_relu=True, use_rgb_conv=False, use_disks=True, norm_radius=5, binary_prev_mask=False,
+                       with_prev_mask=True, with_aux_output=True)
 
     seg_model_pretrain_model = torch.load(
         f'./experiments/iter_mask/resnet34/{cfg.seg_model_name}/checkpoints/last_checkpoint.pth')

@@ -9,7 +9,7 @@ import torch.nn.functional as F
 import torch
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
 from collections import OrderedDict
-
+from ..att import Att, Multihead, MultiScaleAtt
 #from mmseg.ops import resize
 #from ..builder import HEADS
 #from .decode_head import BaseDecodeHead
@@ -31,7 +31,7 @@ class MLP(nn.Module):
         x = self.proj(x)
         return x
 
-
+relu_inplace = True
 #@HEADS.register_module()
 class SegFormerHead(nn.Module):
     """
@@ -64,6 +64,9 @@ class SegFormerHead(nn.Module):
             #norm_cfg=dict(type='SyncBN', requires_grad=True)
             norm_cfg=dict(type='BN', requires_grad=True)
         )
+        # what about channel problem?
+        self.att = Multihead(270, reduction=3, heads=3, ratio=4)
+        self.upatt = MultiScaleAtt(high_dim=270, low_dim=64, out_dim=270, reduction=3, ratio=2)
 
         self.linear_pred = nn.Conv2d(embedding_dim, self.num_classes, kernel_size=1)
         
@@ -72,7 +75,7 @@ class SegFormerHead(nn.Module):
         else:
             self.dropout = None
 
-    def forward(self, inputs):
+    def forward(self, inputs, low_level,points=None):
         #x = self._transform_inputs(inputs)  # len=4, 1/4,1/8,1/16,1/32
         x =  [inputs[i] for i in self.in_index]
         c1, c2, c3, c4 = x
@@ -93,6 +96,9 @@ class SegFormerHead(nn.Module):
 
         _c = self.linear_fuse(torch.cat([_c4, _c3, _c2, _c1], dim=1))
 
+        _c=self.att(_c, points)
+        _c=self.upatt(_c,low_level,points)
+        
         x = self.dropout(_c)
         feature = x
         x = self.linear_pred(x)

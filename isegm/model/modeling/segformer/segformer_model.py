@@ -77,12 +77,12 @@ class SegFormer(nn.Module):
         self.inference_mode = True
         self.eval()
 
-    def forward(self, x, additional_features=None):
+    def forward(self, x,points, additional_features=None):
         with ExitStack() as stack:
             if self.inference_mode:
                 stack.enter_context(torch.no_grad())
 
-            features = self.backbone(x, additional_features)
-            pred, feature = self.decode_head(features)
+            features,low_level = self.backbone(x, additional_features)
+            pred, feature = self.decode_head(features,low_level,points)
         return pred,feature
 

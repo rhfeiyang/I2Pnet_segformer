@@ -441,7 +441,12 @@ class MixVisionTransformer(nn.Module):
         outs = []
         embeds = []
 
+        low_x=self.conv1(x)
+        low_x=self.bn1(low_x)
+        low_x=self.relu(low_x)
         if additional_feature is not None:
+            low_x+=additional_feature
+            
             af, H, W = self.patch_embed_side1(additional_feature)
             af = af.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
             embeds.append(af) #1/4
@@ -500,13 +505,13 @@ class MixVisionTransformer(nn.Module):
         #    x = x + embeds[3]
         outs.append(x)
 
-        return outs
+        return low_x,outs
 
     def forward(self, x, additional_feature = None):
-        x = self.forward_features(x, additional_feature)
+        low_x,x = self.forward_features(x, additional_feature)
         # x = self.head(x)
 
-        return x
+        return x,low_x
 
 
 class DWConv(nn.Module):
