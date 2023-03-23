@@ -75,7 +75,7 @@ class SegFormerModel(ISModel):
         refined_mask, trimap = self.refiner(cropped_image,click_map,cropped_feature,cropped_logits)
         return {'instances_refined': refined_mask, 'trimap':trimap, 'instances_coarse':cropped_logits}
 
-    def forward(self, image, points):
+    def forward(self, image, points, gt_mask=None):
         image, prev_mask = self.prepare_input(image)
         coord_features = self.get_coord_features(image, prev_mask, points)
         click_map = coord_features[:,1:,:,:]

@@ -1,5 +1,5 @@
 from isegm.utils.exp_imports.default import *
-MODEL_NAME = 'regformer'
+MODEL_NAME = 'segformer'
 
 
 def main(cfg):

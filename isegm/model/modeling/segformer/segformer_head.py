@@ -65,8 +65,8 @@ class SegFormerHead(nn.Module):
             norm_cfg=dict(type='BN', requires_grad=True)
         )
         # what about channel problem?
-        self.att = Multihead(270, reduction=3, heads=3, ratio=4)
-        self.upatt = MultiScaleAtt(high_dim=270, low_dim=64, out_dim=270, reduction=3, ratio=2)
+        self.att = Multihead(256, reduction=3, heads=3, ratio=4)
+        self.upatt = MultiScaleAtt(high_dim=256, low_dim=64, out_dim=256, reduction=3, ratio=2)
 
         self.linear_pred = nn.Conv2d(embedding_dim, self.num_classes, kernel_size=1)
         

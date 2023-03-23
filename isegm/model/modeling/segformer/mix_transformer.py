@@ -314,9 +314,11 @@ class MixVisionTransformer(nn.Module):
         self.num_classes = num_classes
         self.depths = depths
         #for 1/2 low_feature
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1, bias=False)
-        self.bn1 = norm_layer(64)
-        self.relu = nn.ReLU(inplace=relu_inplace)
+        # self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1, bias=False)
+        # self.bn1 = nn.BatchNorm2d(64)
+        # self.relu = nn.ReLU(inplace=relu_inplace)
+        self.patch_embed_low = OverlapPatchEmbed(img_size=img_size, patch_size=3, stride=2, in_chans=in_chans,
+                                              embed_dim=64)
         # patch_embed
         self.patch_embed1 = OverlapPatchEmbed(img_size=img_size, patch_size=7, stride=4, in_chans=in_chans,
                                               embed_dim=embed_dims[0])
@@ -441,11 +443,18 @@ class MixVisionTransformer(nn.Module):
         outs = []
         embeds = []
 
-        low_x=self.conv1(x)
-        low_x=self.bn1(low_x)
-        low_x=self.relu(low_x)
+        # low_x=self.conv1(x)
+        # low_x=self.bn1(low_x)
+        # low_x=self.relu(low_x)
+        low_x,H,W=self.patch_embed_low(x)
+        low_x=low_x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
         if additional_feature is not None:
-            low_x+=additional_feature
+            # low_add=self.conv1(additional_feature)
+            # low_add=self.bn1(low_add)
+            # low_add=self.relu(low_add)
+            low_add,H,W=self.patch_embed_low(additional_feature)
+            low_add=low_add.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
+            low_x+=low_add
             
             af, H, W = self.patch_embed_side1(additional_feature)
             af = af.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
