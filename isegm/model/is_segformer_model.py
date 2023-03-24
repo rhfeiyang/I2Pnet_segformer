@@ -15,7 +15,7 @@ from isegm.model.ops import DistMaps
 class SegFormerModel(ISModel):
     @serialize
     def __init__(self, feature_stride = 4, backbone_lr_mult=0.1,
-                 norm_layer=nn.BatchNorm2d, pipeline_version = 's1', model_version = 'b0',
+                 norm_layer=nn.BatchNorm2d, pipeline_version = 's1',net_mode='', model_version = 'b0',
                   **kwargs):
         super().__init__(norm_layer=norm_layer, **kwargs)
 

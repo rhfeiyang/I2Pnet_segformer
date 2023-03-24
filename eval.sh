@@ -1,0 +1,1 @@
+python scripts/evaluate_model.py --intention ./experiments/iter_mask/segformer/000_segformer_coarse/checkpoints/last_checkpoint.pth --segmentation ./experiments/iter_mask/segformer/000_segformer_coarse/checkpoints/last_checkpoint.pth --datasets GrabCut,Berkeley
